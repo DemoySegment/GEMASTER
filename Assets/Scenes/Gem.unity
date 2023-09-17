@@ -3276,7 +3276,7 @@ MonoBehaviour:
     m_Bits: 128
   speed: 0.2
   jumping: 0
-  rate: 3.62
+  rate: 9
 --- !u!61 &1455062446
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3318,7 +3318,7 @@ Rigidbody2D:
   m_Mass: 1.5
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 2.06
+  m_GravityScale: 4.9
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -3480,7 +3480,6 @@ GameObject:
   - component: {fileID: 1543049681}
   - component: {fileID: 1543049683}
   - component: {fileID: 1543049682}
-  - component: {fileID: 1543049684}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
@@ -3516,7 +3515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41796ec0fe92bb6469d5912cb0aecc28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 5
 --- !u!114 &1543049683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3535,32 +3534,15 @@ MonoBehaviour:
   batchSize: 20
   clifWidth: 5
   groundLayer: 7
---- !u!114 &1543049684
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1543049680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cbe6e84435a95842bd55ea8325c7874, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   gems:
   - {fileID: 4001497035986595862, guid: 5ddde96e51a6395489c9e3de9125b5ab, type: 3}
   - {fileID: 9189179974882950999, guid: a9883665fbfd641418ccfc10b37ff896, type: 3}
   - {fileID: 6590348132505113968, guid: 69fc084983c1da24686b9574beb42731, type: 3}
-  platformLength: 20
-  gemChance: 1
-  highSpawnPoint: {fileID: 322926184}
-  lowSpawnPoint: {fileID: 1026769042}
-  distanceToGap: 5
-  ground: {fileID: 1543049681}
-  signIndex: 10
-  gemRequirement: 3
-  cursor: {fileID: 1305989264}
-  width: 10
+  gemChance: 0.5
+  highSpawnPoint: 5
+  lowSpawnPoint: 2
+  sign: {fileID: 1305989263}
+  distanceToGap: 7
 --- !u!1 &1623045352
 GameObject:
   m_ObjectHideFlags: 0

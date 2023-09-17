@@ -82,8 +82,6 @@ public class GroundGenerator : MonoBehaviour
 
             cursor.transform.position = cursor.transform.position + new Vector3(width, 0);
         }
-        return trapStart;
-
     }
 
     private void spawnGem(float rand)

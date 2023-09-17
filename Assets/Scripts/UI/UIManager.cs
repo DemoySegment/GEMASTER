@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,6 +27,7 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        iTween.Init(gameObject);
     }
 
 
@@ -60,6 +62,8 @@ public class UIManager : MonoBehaviour
         gems.Add((GemColor.Orange, GemShape.Square));
         gems.Add((GemColor.Blue, GemShape.Triangle));
         SetGems(gems);
+        SetNextGem((GemColor.Blue, GemShape.Triangle));
+        SetZumaEffect(3);
     }
 
     /// <summary>
@@ -96,7 +100,7 @@ public class UIManager : MonoBehaviour
             }
         }
     }
-    
+
 
     public void SetGems(List<(GemColor, GemShape)> gems)
     {
@@ -140,6 +144,8 @@ public class UIManager : MonoBehaviour
                 _gemImages[i].color = Color.white;
             }
         }
+
+        iTween.ScaleFrom(_gemImages[gems.Count - 1].gameObject, new Vector3(1.2f, 1.2f, 1.2f), 0.5f);
     }
 
 
@@ -173,8 +179,34 @@ public class UIManager : MonoBehaviour
                 nextGem.color = _cOrange;
                 break;
         }
+
+        iTween.ScaleFrom(nextGem.gameObject, new Vector3(1.2f, 1.2f, 1.2f), 0.5f);
     }
 
+
+    /// <summary>
+    /// Zuma eliminates the effect
+    /// </summary>
+    /// <param name="gemLenthBefore">the number of gems before Zuma elimination</param> 
+    public void SetZumaEffect(int gemLenthBefore)
+    {
+        if (gemLenthBefore < 3)
+        {
+            return;
+        }
+        Image gemImg1 = _gemImages[gemLenthBefore - 1];
+        Image gemImg2 = _gemImages[gemLenthBefore - 2];
+        Image gemImg3 = _gemImages[gemLenthBefore - 3];
+        // StartCoroutine()
+        gemImg1.sprite = sEmpty;
+        gemImg2.sprite = sEmpty;
+        gemImg3.sprite = sEmpty;
+    }
+
+    IEnumerator ElimationEffect()
+    {
+     yield break;   
+    }
 
     // Update is called once per frame
     void Update()
