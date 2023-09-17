@@ -30,6 +30,7 @@ public class GroundGenerator : MonoBehaviour
     private int distanceToGap = 7;
     private List<float> gemsAfterSign = new List<float>();
     public static GroundGenerator instance;
+    private bool leaveSpace = false;
 
     private void Awake()
     {
@@ -61,6 +62,9 @@ public class GroundGenerator : MonoBehaviour
         Debug.Log(trapStart);
         for (int i = 0; i < batchSize; i++)
         {
+
+            Debug.Log(leaveSpace);
+            Debug.Log(i);
             if (i == signIndex)
             {
                 Instantiate(sign, cursor.position, Quaternion.identity);
@@ -86,6 +90,10 @@ public class GroundGenerator : MonoBehaviour
 
     private void spawnGem(float rand)
     {
+        if (leaveSpace) {
+            leaveSpace = false;
+            return;
+        }
         if (rand < gemChance)
         {
             int randGem = Random.Range(0, gems.Count);
@@ -97,6 +105,7 @@ public class GroundGenerator : MonoBehaviour
                 gem = Instantiate(gems[randGem], new Vector3(0,lowSpawnPoint,0) + cursor.position, Quaternion.identity);
             }
             gem.transform.SetParent(ground, true);
+            leaveSpace = true;
         }
     }
     public void test()
