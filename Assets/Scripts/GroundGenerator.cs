@@ -16,15 +16,21 @@ public class GroundGenerator : MonoBehaviour
     [SerializeField]
     private int clifWidth = 5;
     [SerializeField]
-    public int groundLayer = 7;
+    private int groundLayer = 7;
 
+    public static GroundGenerator instance;
+
+    private void Awake()
+    {
+        instance = this; 
+    }
 
     // Start is called before the first frame update
 
     void Start()
     {
         cursor.transform.position = ground.transform.position;
-        generateStage(20);
+        generateStage();
     }
 
     // Update is called once per frame
@@ -33,16 +39,19 @@ public class GroundGenerator : MonoBehaviour
         
     }
     // generate a batch of ground composed by the basicPiece, a slot will be involved in between
-    private void generateStage(int length)
+    public void generateStage()
     {
         float width = basicPiece.transform.localScale.x*2;
-        int trapStart = Random.Range(length/2, length - clifWidth);
+        int trapStart = Random.Range(batchSize / 2, batchSize - clifWidth);
         Debug.Log(trapStart);
-        for (int i = 0; i < length; i++)
+        for (int i = 0; i < batchSize; i++)
         {
             if(i < trapStart || i >= trapStart + clifWidth)
             {
                 GameObject t = Instantiate(basicPiece, cursor.position, new Quaternion());
+                TileColapse tc =  t.AddComponent<TileColapse>();
+                tc.TriggerTileGenerator = i % (batchSize/2) == 0;
+
                 t.transform.SetParent(ground, true);
             }
 
@@ -55,5 +64,9 @@ public class GroundGenerator : MonoBehaviour
         
 
 
+    }
+    public void test()
+    {
+        Debug.Log("invoked");
     }
 }
