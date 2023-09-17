@@ -3999,7 +3999,6 @@ MonoBehaviour:
   - {fileID: 453502271}
   - {fileID: 773542471}
   nextGem: {fileID: 303639972}
-  RestartBtn: {fileID: 1614320217}
   GameOverPanel: {fileID: 1668056625}
   test: 0
 --- !u!4 &1623045354

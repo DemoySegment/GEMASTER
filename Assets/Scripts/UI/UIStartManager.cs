@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 namespace UI
 {
@@ -9,8 +8,15 @@ namespace UI
         
         public void OnClickStart()
         {
-            Debug.Log("start!!");
             SceneManager.LoadScene("Gem");
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                OnClickStart();
+            }
         }
     }
 }
