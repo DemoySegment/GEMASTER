@@ -61,6 +61,11 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
+        if (test)
+        {
+            TestUI();
+            test = false;
+        }
 
     }
 
@@ -243,7 +248,7 @@ public class UIManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(0.5f);
-        SetGems(gems);
+        SetGems(gems, anime:false);
     }
 
 
