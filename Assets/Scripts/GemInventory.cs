@@ -26,7 +26,8 @@ public class GemInventory : MonoBehaviour
     }
 
 
-    public void SetGemInventory(List<(GemColor,GemShape)> newGems){
+    public void SetGemInventory(List<(GemColor, GemShape)> newGems)
+    {
         gems = newGems;
     }
     private void CheckForMatches()
@@ -72,5 +73,38 @@ public class GemInventory : MonoBehaviour
 
             UIManager.Instance.SetGems(gems);
         }
+    }
+
+
+    public bool FindColors(GemColor color, int num)
+    {
+
+        for (int i = gems.Count - 1; i >= 0; i--)
+        {
+            if (num > 0 && gems[i].Item1 == color)
+            {
+                gems.RemoveAt(i);
+                num -= 1;
+
+            }
+        }
+        if (num == 0) { return true; }
+        return false;
+    }
+
+    public bool FindShapes(GemShape shape, int num)
+    {
+        for (int i = gems.Count - 1; i >= 0; i--)
+        {
+            if (num > 0 && gems[i].Item2 == shape)
+            {
+                gems.RemoveAt(i);
+                num -= 1;
+
+            }
+        }
+
+        if (num == 0) { return true; }
+        return false;
     }
 }
