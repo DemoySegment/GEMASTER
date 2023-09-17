@@ -5,8 +5,11 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+
+
+
 public class Player : MonoBehaviour
-{
+{ 
     // Start is called before the first frame update
 
     [SerializeField]
@@ -28,15 +31,26 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        //transform.position = new Vector3(transform.position.x, transform.position.y+speed, transform.position.z);
-        if(!jumping && Input.GetKey(KeyCode.Space))
+        // when game ends, the button should be used to restart the game instead
+        if (Input.GetKey(KeyCode.Space))
         {
-            StartCoroutine(Jump());
+            if (GameManager.Instance.end)
+            {
+                UIManager.Instance.OnClickRestartBtn();
+            }
+            else if (!jumping)
+            {
+                StartCoroutine(Jump());
+            }
+
         }
+
+
+
     }
     IEnumerator Jump()
     {
-        rd.AddForce(Vector2.up*rate, ForceMode2D.Impulse);
+        rd.AddForce(Vector2.up * rate, ForceMode2D.Impulse);
         jumping = true;
         yield return new WaitUntil(IsOnGround);
         jumping = false;
@@ -45,11 +59,12 @@ public class Player : MonoBehaviour
     private bool IsOnGround()
     {
         // radius hard-coded for a specific player model
-        bool grounded = Physics2D.OverlapCircle(transform.position, 1.5f+0.1f, groundLayer);
+        bool grounded = Physics2D.OverlapCircle(transform.position, 1.5f + 0.1f, groundLayer);
         //Debug.Log(grounded);
         return grounded;
- 
+
     }
 
 
 }
+

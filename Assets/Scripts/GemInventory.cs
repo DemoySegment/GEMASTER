@@ -19,9 +19,13 @@ public class GemInventory : MonoBehaviour
         {
             gems.Add((color, shape));
             UIManager.Instance.SetGems(gems);
+            CheckForMatches();
             return true;
         }
 
+        GameManager.Instance.end = true;
+        UIManager.Instance.OnGameEnd();
+        StopAllCoroutines();
         return false;
     }
 
@@ -38,41 +42,25 @@ public class GemInventory : MonoBehaviour
         {
             return;
         }
-
-        for (int i = gems.Count - 2; i < gems.Count; i++)
+        (GemColor, GemShape) g1 = gems[^1];
+        (GemColor, GemShape) g2 = gems[^2];
+        (GemColor, GemShape) g3 = gems[^3];
+        if((g1.Item1 == g2.Item1 && g2.Item1 == g3.Item1) || (g1.Item2 == g2.Item2 && g2.Item2 == g3.Item2))
         {
-            GemColor curColor = gems[i].Item1;
-            GemShape curShape = gems[i].Item2;
-
-            GemColor prevColor = gems[i - 1].Item1;
-            GemShape prevShape = gems[i - 1].Item2;
-
-            if (curColor == prevColor && (matchingAttribute == "color" ||
-                                          matchingAttribute == ""))
+            if ((g1.Item1 == g2.Item1 && g2.Item1 == g3.Item1) && (g1.Item2 == g2.Item2 && g2.Item2 == g3.Item2))
             {
-                count += 1;
-                matchingAttribute = "color";
+                
+                UIManager.Instance.SetScore(GameManager.Instance.PlayerData.AddScore(10));
             }
-
-            if (curShape == prevShape && (matchingAttribute == "shape" ||
-                                          matchingAttribute == ""))
-            {
-                count += 1;
-                matchingAttribute = "shape";
-            }
-
-            if (count >= 3)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    gems.RemoveAt(gems.Count - 1);
-                }
-
-                count = 1;
-            }
-
-            UIManager.Instance.SetGems(gems);
+            UIManager.Instance.SetZuma(gems);
+            UIManager.Instance.SetScore(GameManager.Instance.PlayerData.AddScore(10));
         }
+
+
+
+
+           
+        
     }
 
 
