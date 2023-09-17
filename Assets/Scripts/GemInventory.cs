@@ -76,34 +76,17 @@ public class GemInventory : MonoBehaviour
     }
 
 
-    public bool FindColors(GemColor color, int num)
+    public bool FindGem(GemColor color, GemShape shape, int num)
     {
 
         for (int i = gems.Count - 1; i >= 0; i--)
         {
-            if (num > 0 && gems[i].Item1 == color)
+            if (num > 0 && gems[i].Item1 == color && gems[i].Item2 == shape)
             {
                 gems.RemoveAt(i);
                 num -= 1;
-
             }
         }
-        if (num == 0) { return true; }
-        return false;
-    }
-
-    public bool FindShapes(GemShape shape, int num)
-    {
-        for (int i = gems.Count - 1; i >= 0; i--)
-        {
-            if (num > 0 && gems[i].Item2 == shape)
-            {
-                gems.RemoveAt(i);
-                num -= 1;
-
-            }
-        }
-
         if (num == 0) { return true; }
         return false;
     }

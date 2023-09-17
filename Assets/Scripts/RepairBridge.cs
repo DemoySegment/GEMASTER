@@ -7,33 +7,17 @@ public class RepairBridge : MonoBehaviour
     private GemData requiredGem;
     public int gemRequirement = 3;
 
-    private string requirement;
     private GemColor color;
     private GemShape shape;
     void Start()
     {
-        if (Random.Range(0f, 1f) < 0.5f)
-        {
-            requirement = "color";
             color = GetRandomGemColor();
-        }
-        else
-        {
-            requirement = "shape";
             shape = GetRandomGemShape();
-        }
     }
-    public void checkGemShape(GemShape shape)
+    public void checkGem()
     {
 
-        if (!GemInventory.Instance.FindShapes(shape,gemRequirement))
-        {
-            UIManager.Instance.OnGameEnd();
-        }
-    }
-    public void checkGemColor(GemColor color)
-    {
-        if (!GemInventory.Instance.FindColors(color,gemRequirement))
+        if (!GemInventory.Instance.FindGem(color,shape,gemRequirement))
         {
             UIManager.Instance.OnGameEnd();
         }
@@ -43,12 +27,7 @@ public class RepairBridge : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (requirement == "shape"){
-                checkGemShape(shape);
-            }
-            else{
-                checkGemColor(color);
-            }
+           checkGem();
         }
     }
     GemColor GetRandomGemColor()
