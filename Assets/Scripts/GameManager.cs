@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     }
     IEnumerator TimeCount()
     {
-        while (true)
+        while (!end)
         {
             yield return new WaitForSeconds(1);
             UIManager.Instance.SetScore(PlayerData.AddScore(1));
