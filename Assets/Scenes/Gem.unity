@@ -3739,7 +3739,7 @@ MonoBehaviour:
   ground: {fileID: 1543049681}
   cursor: {fileID: 1305989264}
   batchSize: 20
-  clifWidth: 5
+  clifWidth: 0
   groundLayer: 7
   gemChance: 0.5
   highSpawnPoint: 5
