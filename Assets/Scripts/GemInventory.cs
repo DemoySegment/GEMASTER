@@ -2,35 +2,16 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public class GemDictionaryEntry
-{
-    public GemColor color;
-    public GemShape shape;
-    public Sprite sprite;
-}
-
 public class GemInventory : MonoBehaviour
 {
     public static GemInventory Instance;
-
-    [SerializeField] private List<GemDictionaryEntry> gemList = new();
-
-    private Dictionary<(GemColor, GemShape), Sprite> gemDictionary = new();
     private int maxSize = 10;
-    private List<(GemColor, GemShape)> gems = new();
-
+    public List<(GemColor, GemShape)> gems = new();
 
     private void Awake()
     {
         Instance = this;
-        
-        foreach (GemDictionaryEntry entry in gemList)
-        {
-            gemDictionary.Add((entry.color, entry.shape), entry.sprite);
-        }
     }
-
 
     public bool AddGem(GemColor color, GemShape shape)
     {
@@ -44,6 +25,10 @@ public class GemInventory : MonoBehaviour
         return false;
     }
 
+
+    public void SetGemInventory(List<(GemColor,GemShape)> newGems){
+        gems = newGems;
+    }
     private void CheckForMatches()
     {
         int count = 1;

@@ -19,14 +19,16 @@ public class GroundGenerator : MonoBehaviour
     private int clifWidth = 5;
     [SerializeField]
     private int groundLayer = 7;
-    [SerializeField]
-    private List<GameObject> gems = new List<GameObject>();
-
     [SerializeField] private float gemChance = 0.5f;
     [SerializeField] private int highSpawnPoint;
     [SerializeField] private int lowSpawnPoint;
     [SerializeField] private GameObject sign;
-    [SerializeField]
+
+    [SerializeField] private List<GameObject> gemsPrefabs;
+    private Color _cOrange = new(0.953f, 0.612f, 0.404f);
+    private Color _cBlue = new(0.408f, 0.631f, 0.961f);
+    private Color _cGreen = new(0.408f, 0.953f, 0.878f);
+
     private int distanceToGap = 7;
     private List<float> gemsAfterSign = new List<float>();
     public static GroundGenerator instance;
@@ -45,11 +47,6 @@ public class GroundGenerator : MonoBehaviour
         generateStage();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     // generate a batch of ground composed by the basicPiece, a slot will be involved in between
     public void generateStage()
     {
@@ -90,19 +87,33 @@ public class GroundGenerator : MonoBehaviour
 
     private void spawnGem(float rand)
     {
-        if (leaveSpace) {
+        if (leaveSpace)
+        {
             leaveSpace = false;
             return;
         }
         if (rand < gemChance)
         {
-            int randGem = Random.Range(0, gems.Count);
+            int randGem = Random.Range(0, gemsPrefabs.Count);
+            int randShape = Random.Range(0, 3);
             GameObject gem;
             if (rand < gemChance / 2)
-                gem = Instantiate(gems[randGem], new Vector3(0,highSpawnPoint,0) + cursor.position, Quaternion.identity);
+                gem = Instantiate(gemsPrefabs[randGem], new Vector3(0, highSpawnPoint, 0) + cursor.position, Quaternion.identity);
             else
             {
-                gem = Instantiate(gems[randGem], new Vector3(0,lowSpawnPoint,0) + cursor.position, Quaternion.identity);
+                gem = Instantiate(gemsPrefabs[randGem], new Vector3(0, lowSpawnPoint, 0) + cursor.position, Quaternion.identity);
+            }
+            switch (randShape)
+            {
+                case 0:
+                    gem.GetComponent<SpriteRenderer>().color = _cOrange;
+                    break;
+                case 1:
+                    gem.GetComponent<SpriteRenderer>().color = _cBlue;
+                    break;
+                case 2:
+                    gem.GetComponent<SpriteRenderer>().color = _cGreen;
+                    break;
             }
             gem.transform.SetParent(ground, true);
             leaveSpace = true;
@@ -131,5 +142,17 @@ public class GroundGenerator : MonoBehaviour
     List<float> Shuffle(List<float> list)
     {
         return list.OrderBy(x => Random.value).ToList();
+    }
+
+    GemColor GetRandomGemColor()
+    {
+        GemColor[] colors = (GemColor[])System.Enum.GetValues(typeof(GemColor));
+        return colors[Random.Range(0, colors.Length)];
+    }
+
+    GemShape GetRandomGemShape()
+    {
+        GemShape[] shapes = (GemShape[])System.Enum.GetValues(typeof(GemShape));
+        return shapes[Random.Range(0, shapes.Length)];
     }
 }
