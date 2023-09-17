@@ -44,10 +44,12 @@ public class Player : MonoBehaviour
     }
     private bool IsOnGround()
     {
-
+        // radius hard-coded for a specific player model
         bool grounded = Physics2D.OverlapCircle(transform.position, 1.5f+0.1f, groundLayer);
-        Debug.Log(grounded);
+        //Debug.Log(grounded);
         return grounded;
  
     }
+
+
 }

@@ -61,11 +61,7 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
-        if (test)
-        {
-            TestUI();
-            test = false;
-        }
+
     }
 
 
