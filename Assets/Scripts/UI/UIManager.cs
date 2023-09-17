@@ -340,7 +340,7 @@ public class UIManager : MonoBehaviour
             gems.Add((color, shape));
         }
 
-        SetGems(gems);
+        SetGems(gems, anime:false);
         SetNextGem(gems[^1]);
         List<int> indexList = new List<int>();
         indexList.Add(1);
