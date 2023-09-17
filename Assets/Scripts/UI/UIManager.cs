@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 
 public class UIManager : MonoBehaviour
@@ -113,6 +116,7 @@ public class UIManager : MonoBehaviour
     {
         for (int i = 0; i < _gemImages.Length; i++)
         {
+            _gemImages[i].GetComponent<RectTransform>().localScale = Vector3.one;
             if (i < gems.Count)
             {
                 (GemColor, GemShape) gem = gems[i];
@@ -206,6 +210,47 @@ public class UIManager : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// UI Effect for Gems used to fix the bridge
+    /// </summary>
+    /// <param name="gemIndexes">List of gem index in the gem collection list</param>
+    /// <param name="gems">gem collection list before using gems to fix the bridge</param>
+    public void SetGemUsedForFixBridge(List<int> gemIndexes, List<(GemColor, GemShape)> gems)
+    {
+        int maxIndex = -1;
+        foreach (var index in gemIndexes)
+        {
+            maxIndex = Math.Max(maxIndex, index);
+        }
+
+        if (maxIndex >= gems.Count)
+        {
+            Debug.LogError("The max index of the gem index you offer exceeds the number of gems in the collection");
+            return;
+        }
+
+        StartCoroutine(FixBridgeEffect(gemIndexes, gems));
+    }
+
+    private IEnumerator FixBridgeEffect(List<int> gemIndexes, List<(GemColor, GemShape)> gems)
+    {
+        List<(GemColor, GemShape)> gemsUsed = new List<(GemColor, GemShape)>();
+        foreach (var index in gemIndexes)
+        {
+            iTween.ScaleFrom(_gemImages[index].gameObject, new Vector3(1.3f, 1.3f, 1.3f), 0.5f);
+            gemsUsed.Add(gems[index]);
+        }
+
+        foreach (var gem in gemsUsed)
+        {
+            gems.Remove(gem);
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        SetGems(gems);
+    }
+
+
     public void OnGameEnd()
     {
         GameOverPanel.SetActive(true);
@@ -259,7 +304,7 @@ public class UIManager : MonoBehaviour
     {
         SetScore(Random.Range(0, 100000));
         List<(GemColor, GemShape)> gems = new List<(GemColor, GemShape)>();
-        for (int i = 0; i < Random.Range(3, 10); i++)
+        for (int i = 0; i < Random.Range(5, 11); i++)
         {
             int c = Random.Range(0, 3); // color
             int s = Random.Range(0, 3); // shape
@@ -296,7 +341,12 @@ public class UIManager : MonoBehaviour
 
         SetGems(gems);
         SetNextGem(gems[^1]);
-        SetZuma(gems);
-        OnGameEnd();
+        List<int> indexList = new List<int>();
+        indexList.Add(1);
+        indexList.Add(2);
+        indexList.Add(3);
+        SetGemUsedForFixBridge(indexList, gems);
+        // SetZuma(gems);
+        // OnGameEnd();
     }
 }
