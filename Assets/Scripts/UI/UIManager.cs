@@ -58,6 +58,7 @@ public class UIManager : MonoBehaviour
         }
 
         OnResetUI();
+        SetNextGem((GemColor.Orange, GemShape.Square), 2);
     }
 
     void Update()
@@ -195,7 +196,14 @@ public class UIManager : MonoBehaviour
                 break;
         }
 
-        nextGemNum.text = num == 1 ? String.Empty : num.ToString();
+        if (num > 1)
+        {
+            nextGemNum.text = num.ToString();
+        }
+        else
+        {
+            nextGemNum.text = "";
+        }
         iTween.ScaleFrom(nextGem.gameObject, new Vector3(1.2f, 1.2f, 1.2f), 0.5f);
     }
 
