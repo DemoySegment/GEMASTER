@@ -13,17 +13,22 @@ public class UIManager : MonoBehaviour
 
     public GameObject scoreBar;
     private Image[] _scoreImages;
-    
+
     public GameObject gemBar;
     private Image[] _gemImages;
     private Color _cOrange = new(0.953f, 0.612f, 0.404f);
     private Color _cBlue = new(0.408f, 0.631f, 0.961f);
     private Color _cGreen = new(0.408f, 0.953f, 0.878f);
-    
-    public Image nextGem;
-    public static UIManager instance;
 
-    
+    public Image nextGem;
+    public static UIManager Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+
     void Start()
     {
         _scoreImages = new Image[scoreBar.transform.childCount];
@@ -37,24 +42,24 @@ public class UIManager : MonoBehaviour
         {
             _gemImages[i] = gemBar.transform.GetChild(i).GetComponent<Image>();
         }
-        
+
         OnResetUI();
         TestUI();
-
     }
 
 
     void TestUI()
     {
-        //setscore(123456789);
-        //list<gem> gems = new list<gem>();
-        //gems.add(new gem(gemshape.square, gemcolor.blue));
-        //gems.add(new gem(gemshape.square, gemcolor.orange));
-        //gems.add(new gem(gemshape.circle, gemcolor.green));
-        //gems.add(new gem(gemshape.triangle, gemcolor.green));
-        //gems.add(new gem(gemshape.square, gemcolor.green));
-        //setgems(gems);
-        //setnextgem(new gem(gemshape.square, gemcolor.blue));
+        SetScore(123456789);
+        List<(GemColor, GemShape)> gems = new List<(GemColor, GemShape)>();
+        gems.Add((GemColor.Blue, GemShape.Circle));
+        gems.Add((GemColor.Orange, GemShape.Square));
+        gems.Add((GemColor.Blue, GemShape.Square));
+        gems.Add((GemColor.Green, GemShape.Triangle));
+        gems.Add((GemColor.Orange, GemShape.Triangle));
+        gems.Add((GemColor.Orange, GemShape.Square));
+        gems.Add((GemColor.Blue, GemShape.Triangle));
+        SetGems(gems);
     }
 
     /// <summary>
@@ -92,14 +97,15 @@ public class UIManager : MonoBehaviour
         }
     }
     
-    public void SetGems(List<Gem> gems)
+
+    public void SetGems(List<(GemColor, GemShape)> gems)
     {
         for (int i = 0; i < _gemImages.Length; i++)
         {
             if (i < gems.Count)
             {
-                Gem gem = gems[i];
-                switch (gem.shape)
+                (GemColor, GemShape) gem = gems[i];
+                switch (gem.Item2)
                 {
                     case GemShape.Circle:
                         _gemImages[i].sprite = sGems[0];
@@ -115,10 +121,10 @@ public class UIManager : MonoBehaviour
                         break;
                 }
 
-                switch (gem.color)
+                switch (gem.Item1)
                 {
                     case GemColor.Blue:
-                        _gemImages[i].color  = _cBlue;
+                        _gemImages[i].color = _cBlue;
                         break;
                     case GemColor.Green:
                         _gemImages[i].color = _cGreen;
@@ -137,9 +143,9 @@ public class UIManager : MonoBehaviour
     }
 
 
-    public void SetNextGem(Gem gem)
+    public void SetNextGem((GemColor, GemShape) gem)
     {
-        switch (gem.shape)
+        switch (gem.Item2)
         {
             case GemShape.Circle:
                 nextGem.sprite = sGems[0];
@@ -154,11 +160,11 @@ public class UIManager : MonoBehaviour
                 nextGem.sprite = sEmpty;
                 break;
         }
-        
-        switch (gem.color)
+
+        switch (gem.Item1)
         {
             case GemColor.Blue:
-                nextGem.color  = _cBlue;
+                nextGem.color = _cBlue;
                 break;
             case GemColor.Green:
                 nextGem.color = _cGreen;
@@ -167,7 +173,6 @@ public class UIManager : MonoBehaviour
                 nextGem.color = _cOrange;
                 break;
         }
-        
     }
 
 

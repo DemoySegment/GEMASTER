@@ -31,7 +31,6 @@ public class Gem : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            _gameManager.addScore();
             Destroy(gameObject);
         }
     }

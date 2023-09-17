@@ -1,19 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
+
+
 public class GameManager : MonoBehaviour
 {
-    private int score = 0;
-    public TextMeshProUGUI scoreUI;
+    public static GameManager Instance;
+    public PlayerData PlayerData;
+    
+    
+    private void Awake()
+    {
+        Instance = this;
+        PlayerData = new PlayerData();
+    }
+    
+
     void Start()
     {
-        scoreUI.text = "Score: 0";
-    }
-
-    public void addScore(){
-        score+= 10;
-        scoreUI.text = "Score: " + score;
     }
 }
