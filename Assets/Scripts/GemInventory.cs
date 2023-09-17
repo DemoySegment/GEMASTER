@@ -25,7 +25,6 @@ public class GemInventory : MonoBehaviour
 
         GameManager.Instance.end = true;
         UIManager.Instance.OnGameEnd();
-        StopAllCoroutines();
         return false;
     }
 
