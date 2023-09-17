@@ -24,7 +24,6 @@ public class TileColapse : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("BoarderTriggered");
         if (collision.CompareTag("Boarder"))
         {
 

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using GemTemp.Scripts.Enum;
 using UnityEngine;
 using UnityEngine.UI;
 
