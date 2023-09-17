@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
     private Image[] _scoreImages;
 
     public GameObject gemBar;
+    public Image[] zumaImages;
     private Image[] _gemImages;
     private Color _cOrange = new(0.953f, 0.612f, 0.404f);
     private Color _cBlue = new(0.408f, 0.631f, 0.961f);
@@ -23,6 +24,7 @@ public class UIManager : MonoBehaviour
 
     public Image nextGem;
     public static UIManager Instance;
+    public bool test = false;
 
     private void Awake()
     {
@@ -46,25 +48,17 @@ public class UIManager : MonoBehaviour
         }
 
         OnResetUI();
-        TestUI();
     }
-
-
-    void TestUI()
+    
+    void Update()
     {
-        SetScore(123456789);
-        List<(GemColor, GemShape)> gems = new List<(GemColor, GemShape)>();
-        gems.Add((GemColor.Blue, GemShape.Circle));
-        gems.Add((GemColor.Orange, GemShape.Square));
-        gems.Add((GemColor.Blue, GemShape.Square));
-        gems.Add((GemColor.Green, GemShape.Triangle));
-        gems.Add((GemColor.Orange, GemShape.Triangle));
-        gems.Add((GemColor.Orange, GemShape.Square));
-        gems.Add((GemColor.Blue, GemShape.Triangle));
-        SetGems(gems);
-        SetNextGem((GemColor.Blue, GemShape.Triangle));
-        SetZumaEffect(3);
+        if (test)
+        {
+            TestUI();
+            test = false;
+        }
     }
+
 
     /// <summary>
     /// Clean the UI before start/restart the game
@@ -81,6 +75,8 @@ public class UIManager : MonoBehaviour
             gemImg.sprite = sEmpty;
             gemImg.color = Color.white;
         }
+
+        nextGem.sprite = sEmpty;
     }
 
 
@@ -102,7 +98,7 @@ public class UIManager : MonoBehaviour
     }
 
 
-    public void SetGems(List<(GemColor, GemShape)> gems)
+    public void SetGems(List<(GemColor, GemShape)> gems, bool anime = true)
     {
         for (int i = 0; i < _gemImages.Length; i++)
         {
@@ -145,7 +141,10 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        iTween.ScaleFrom(_gemImages[gems.Count - 1].gameObject, new Vector3(1.2f, 1.2f, 1.2f), 0.5f);
+        if (anime)
+        {
+            iTween.ScaleFrom(_gemImages[gems.Count - 1].gameObject, new Vector3(1.2f, 1.2f, 1.2f), 0.5f);
+        }
     }
 
 
@@ -185,31 +184,92 @@ public class UIManager : MonoBehaviour
 
 
     /// <summary>
+    /// Set Zuma Effects
+    /// </summary>
+    /// <param name="gems">Gems Collection before Erase the last three consecutive gems</param>
+    public void SetZuma(List<(GemColor, GemShape)> gems)
+    {
+        SetZumaEffect(gems.Count);
+        gems.RemoveRange(gems.Count - 3, 3);
+        SetGems(gems, anime: false);
+    }
+
+
+    /// <summary>
     /// Zuma eliminates the effect
     /// </summary>
-    /// <param name="gemLenthBefore">the number of gems before Zuma elimination</param> 
-    public void SetZumaEffect(int gemLenthBefore)
+    /// <param name="gemLengthBefore">the number of gems before Zuma elimination</param> 
+    private void SetZumaEffect(int gemLengthBefore)
     {
-        if (gemLenthBefore < 3)
+        if (gemLengthBefore < 3)
         {
             return;
         }
-        Image gemImg1 = _gemImages[gemLenthBefore - 1];
-        Image gemImg2 = _gemImages[gemLenthBefore - 2];
-        Image gemImg3 = _gemImages[gemLenthBefore - 3];
-        // StartCoroutine()
-        gemImg1.sprite = sEmpty;
-        gemImg2.sprite = sEmpty;
-        gemImg3.sprite = sEmpty;
+
+        Image[] zumaGemImgs =
+        {
+            _gemImages[gemLengthBefore - 1], _gemImages[gemLengthBefore - 2], _gemImages[gemLengthBefore - 3]
+        };
+
+        StartCoroutine(EliminationEffect(zumaGemImgs));
     }
 
-    IEnumerator ElimationEffect()
+    IEnumerator EliminationEffect(Image[] zumaGemImgs)
     {
-     yield break;   
+        for (int i = 0; i < zumaGemImgs.Length; i++)
+        {
+            zumaImages[i].sprite = zumaGemImgs[i].sprite;
+            zumaImages[i].color = zumaGemImgs[i].color;
+            zumaImages[i].gameObject.GetComponent<RectTransform>().anchoredPosition =
+                zumaGemImgs[i].gameObject.GetComponent<RectTransform>().anchoredPosition;
+            iTween.MoveTo(zumaImages[i].gameObject,
+                new Vector2(zumaImages[i].gameObject.transform.position.x, -100), 0.5f);
+        }
+
+        yield break;
     }
 
-    // Update is called once per frame
-    void Update()
+    void TestUI()
     {
+        SetScore(Random.Range(0, 100000));
+        List<(GemColor, GemShape)> gems = new List<(GemColor, GemShape)>();
+        for (int i = 0; i < Random.Range(3, 10); i++)
+        {
+            int c = Random.Range(0, 3); // color
+            int s = Random.Range(0, 3); // shape
+            GemColor color;
+            GemShape shape;
+            if (c == 0)
+            {
+                color = GemColor.Blue;
+            }
+            else if (c == 1)
+            {
+                color = GemColor.Green;
+            }
+            else
+            {
+                color = GemColor.Orange;
+            }
+
+            if (s == 0)
+            {
+                shape = GemShape.Circle;
+            }
+            else if (c == 1)
+            {
+                shape = GemShape.Square;
+            }
+            else
+            {
+                shape = GemShape.Triangle;
+            }
+
+            gems.Add((color, shape));
+        }
+
+        SetGems(gems);
+        SetNextGem(gems[^1]);
+        SetZuma(gems);
     }
 }
