@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
@@ -23,6 +24,9 @@ public class UIManager : MonoBehaviour
     private Color _cGreen = new(0.408f, 0.953f, 0.878f);
 
     public Image nextGem;
+    
+    public GameObject GameOverPanel;
+    
     public static UIManager Instance;
     public bool test = false;
 
@@ -35,6 +39,8 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
+        GameOverPanel.SetActive(false);
+        
         _scoreImages = new Image[scoreBar.transform.childCount];
         for (int i = 0; i < _scoreImages.Length; i++)
         {
@@ -194,6 +200,17 @@ public class UIManager : MonoBehaviour
         SetGems(gems, anime: false);
     }
 
+    
+    public void OnGameEnd()
+    {
+        GameOverPanel.SetActive(true);
+    }
+
+    public void OnClickRestartBtn()
+    {
+        SceneManager.LoadScene("Start");
+    }
+
 
     /// <summary>
     /// Zuma eliminates the effect
@@ -271,5 +288,6 @@ public class UIManager : MonoBehaviour
         SetGems(gems);
         SetNextGem(gems[^1]);
         SetZuma(gems);
+        OnGameEnd();
     }
 }
