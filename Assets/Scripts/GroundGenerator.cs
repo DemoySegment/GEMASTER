@@ -60,8 +60,8 @@ public class GroundGenerator : MonoBehaviour
         for (int i = 0; i < batchSize; i++)
         {
 
-            Debug.Log(leaveSpace);
-            Debug.Log(i);
+            //Debug.Log(leaveSpace);
+            //Debug.Log(i);
             if (i == signIndex)
             {
                 Instantiate(sign, cursor.position, Quaternion.identity);
