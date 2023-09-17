@@ -107,12 +107,15 @@ public class GroundGenerator : MonoBehaviour
             {
                 case 0:
                     gem.GetComponent<SpriteRenderer>().color = _cOrange;
+                    gem.GetComponent<GemData>().Color = GemColor.Orange;
                     break;
                 case 1:
                     gem.GetComponent<SpriteRenderer>().color = _cBlue;
+                    gem.GetComponent<GemData>().Color = GemColor.Blue;
                     break;
                 case 2:
                     gem.GetComponent<SpriteRenderer>().color = _cGreen;
+                    gem.GetComponent<GemData>().Color = GemColor.Green;
                     break;
             }
             gem.transform.SetParent(ground, true);
