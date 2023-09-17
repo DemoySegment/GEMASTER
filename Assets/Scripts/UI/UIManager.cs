@@ -24,9 +24,9 @@ public class UIManager : MonoBehaviour
     private Color _cGreen = new(0.408f, 0.953f, 0.878f);
 
     public Image nextGem;
-    
+
     public GameObject GameOverPanel;
-    
+
     public static UIManager Instance;
     public bool test = false;
 
@@ -40,7 +40,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         GameOverPanel.SetActive(false);
-        
+
         _scoreImages = new Image[scoreBar.transform.childCount];
         for (int i = 0; i < _scoreImages.Length; i++)
         {
@@ -55,7 +55,7 @@ public class UIManager : MonoBehaviour
 
         OnResetUI();
     }
-    
+
     void Update()
     {
         if (test)
@@ -80,6 +80,11 @@ public class UIManager : MonoBehaviour
         {
             gemImg.sprite = sEmpty;
             gemImg.color = Color.white;
+        }
+
+        for (int i = 0; i < zumaImages.Length; i++)
+        {
+            zumaImages[i].sprite = sEmpty;
         }
 
         nextGem.sprite = sEmpty;
@@ -200,7 +205,7 @@ public class UIManager : MonoBehaviour
         SetGems(gems, anime: false);
     }
 
-    
+
     public void OnGameEnd()
     {
         GameOverPanel.SetActive(true);
@@ -243,7 +248,11 @@ public class UIManager : MonoBehaviour
                 new Vector2(zumaImages[i].gameObject.transform.position.x, -100), 0.5f);
         }
 
-        yield break;
+        yield return new WaitForSeconds(0.5f);
+        for (int i = 0; i < zumaImages.Length; i++)
+        {
+            zumaImages[i].sprite = sEmpty;
+        }
     }
 
     void TestUI()
