@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -27,6 +27,7 @@ public class UIManager : MonoBehaviour
     private Color _cGreen = new(0.408f, 0.953f, 0.878f);
 
     public Image nextGem;
+    public TextMeshProUGUI nextGemNum;
 
     public GameObject GameOverPanel;
 
@@ -66,7 +67,6 @@ public class UIManager : MonoBehaviour
             TestUI();
             test = false;
         }
-
     }
 
 
@@ -164,7 +164,7 @@ public class UIManager : MonoBehaviour
     }
 
 
-    public void SetNextGem((GemColor, GemShape) gem)
+    public void SetNextGem((GemColor, GemShape) gem, int num = 1)
     {
         switch (gem.Item2)
         {
@@ -195,6 +195,7 @@ public class UIManager : MonoBehaviour
                 break;
         }
 
+        nextGemNum.text = num == 1 ? String.Empty : num.ToString();
         iTween.ScaleFrom(nextGem.gameObject, new Vector3(1.2f, 1.2f, 1.2f), 0.5f);
     }
 
@@ -248,7 +249,7 @@ public class UIManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(0.5f);
-        SetGems(gems, anime:false);
+        SetGems(gems, anime: false);
     }
 
 
@@ -340,8 +341,8 @@ public class UIManager : MonoBehaviour
             gems.Add((color, shape));
         }
 
-        SetGems(gems, anime:false);
-        SetNextGem(gems[^1]);
+        SetGems(gems, anime: false);
+        SetNextGem(gems[^1], 1);
         List<int> indexList = new List<int>();
         indexList.Add(1);
         indexList.Add(2);
