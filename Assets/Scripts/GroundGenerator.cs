@@ -44,9 +44,24 @@ public class GroundGenerator : MonoBehaviour
     void Start()
     {
         cursor.transform.position = ground.transform.position;
+        generateEmptyStage(10);
         generateStage();
     }
+    private void generateEmptyStage(int length)
+    {
+        float width = basicPiece.transform.localScale.x * 2;
+        for (int i = 0; i < length; i++)
+        {
+            GameObject t = Instantiate(basicPiece, cursor.position, new Quaternion());
+            TileColapse tc = t.AddComponent<TileColapse>();
+            tc.TriggerTileGenerator = i % (batchSize / 2) == 0;
 
+            t.transform.SetParent(ground, true);
+            
+
+            cursor.transform.position = cursor.transform.position + new Vector3(width, 0);
+        }
+    }
     // generate a batch of ground composed by the basicPiece, a slot will be involved in between
     public void generateStage()
     {
@@ -56,7 +71,6 @@ public class GroundGenerator : MonoBehaviour
         bool generateCheck = true;
         float rand;
         generateGemsBeforeGap();
-        Debug.Log(trapStart);
         for (int i = 0; i < batchSize; i++)
         {
 
