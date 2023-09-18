@@ -30,9 +30,11 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI nextGemNum;
 
     public GameObject GameOverPanel;
+    
+    public AudioSource gemAudio;
+    public AudioSource zumaAudio;
 
     public static UIManager Instance;
-    public bool test = false;
 
     private void Awake()
     {
@@ -60,17 +62,7 @@ public class UIManager : MonoBehaviour
         OnResetUI();
         SetNextGem((GemColor.Orange, GemShape.Square), 2);
     }
-
-    void Update()
-    {
-        if (test)
-        {
-            TestUI();
-            test = false;
-        }
-    }
-
-
+    
     /// <summary>
     /// Clean the UI before start/restart the game
     /// </summary>
@@ -163,6 +155,7 @@ public class UIManager : MonoBehaviour
         if (anime)
         {
             iTween.ScaleFrom(_gemImages[gems.Count - 1].gameObject, new Vector3(1.2f, 1.2f, 1.2f), 0.5f);
+            gemAudio.Play();
         }
     }
 
@@ -216,6 +209,7 @@ public class UIManager : MonoBehaviour
     /// <param name="gems">Gems Collection before Erase the last three consecutive gems</param>
     public void SetZuma(List<(GemColor, GemShape)> gems)
     {
+        zumaAudio.Play();
         SetZumaEffect(gems.Count);
         gems.RemoveRange(gems.Count - 3, 3);
         SetGems(gems, anime: false);
