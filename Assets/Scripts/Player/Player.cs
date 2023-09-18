@@ -29,10 +29,10 @@ public class Player : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         // when game ends, the button should be used to restart the game instead
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if (GameManager.Instance.end)
             {
@@ -40,31 +40,16 @@ public class Player : MonoBehaviour
             }
             else if (!jumping)
             {
-                StartCoroutine(Jump());
+                jumping = true;
+                rd.AddForce(Vector2.up * rate, ForceMode2D.Impulse);
             }
-
         }
 
-
-
+        if (Physics2D.OverlapCircle(transform.position, 1.3f, groundLayer))
+        {
+            jumping = false;
+        }
     }
-    IEnumerator Jump()
-    {
-        rd.AddForce(Vector2.up * rate, ForceMode2D.Impulse);
-        jumping = true;
-        yield return new WaitUntil(IsOnGround);
-        jumping = false;
-        yield return null;
-    }
-    private bool IsOnGround()
-    {
-        // radius hard-coded for a specific player model
-        bool grounded = Physics2D.OverlapCircle(transform.position, 1.5f + 0.1f, groundLayer);
-        //Debug.Log(grounded);
-        return grounded;
-
-    }
-
-
+    
 }
 
