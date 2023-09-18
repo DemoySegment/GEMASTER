@@ -104,7 +104,9 @@ public class UIManager : MonoBehaviour
         {
             if (i < scoreLen)
             {
+                _scoreImages[i].gameObject.transform.localScale = Vector3.one;
                 _scoreImages[i].sprite = sNums[int.Parse(strScore[scoreLen - i - 1].ToString())];
+                iTween.ScaleFrom(_scoreImages[i].gameObject, new Vector3(1.2f, 1.2f, 1.2f), 0.3f);
             }
             else
             {
